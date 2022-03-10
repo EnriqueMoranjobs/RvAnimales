@@ -1,9 +1,12 @@
 package com.example.recyclrerviewanimales;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +18,10 @@ public class MiAdaptador extends RecyclerView.Adapter<MiAdaptador.ViewHolder> {
 
     private ArrayList<String> mData;
     private LayoutInflater mInflater;
+    private int pos = 0;
+    public int getPos(){return this.pos;}
+    public void decrementarPos(){this.pos--;}
+
 
     //Constructor pasamos datos
 
@@ -36,6 +43,30 @@ public class MiAdaptador extends RecyclerView.Adapter<MiAdaptador.ViewHolder> {
     public void onBindViewHolder(@NonNull MiAdaptador.ViewHolder holder, int position) {
         String animal = mData.get(position);
         holder.myTextView.setText(animal);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView myTv = view.findViewById(R.id.tvAnimales);
+                ColorDrawable viewColor = (ColorDrawable) myTv.getBackground();
+                if (viewColor == null) myTv.setBackgroundColor(Color.RED);
+                else{
+                    int colorId = viewColor.getColor();
+                    if (colorId == Color.WHITE) myTv.setBackgroundColor(Color.RED);
+                    else myTv.setBackgroundColor(Color.WHITE);
+                }
+                pos = position;
+            }
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                TextView myTv = view.findViewById(R.id.tvAnimales);
+                myTv.setBackgroundColor(Color.BLUE);
+                return  false;
+            }
+        });
     }
 
     @Override
